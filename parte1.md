@@ -1,7 +1,5 @@
 # Compendio Integrato di Logica Proposizionale e dei Predicati
 
-Questo documento raccoglie in modo ordinato e strutturato le formule utili, le regole di inferenza, le equivalenze logiche e gli schemi di traduzione avanzati, completi di una spiegazione teorica dettagliata per ciascuna struttura.
-
 ---
 
 ## 1. Indicatori Argomentativi e Struttura
@@ -37,13 +35,109 @@ Le equivalenze logiche collegano formule della Logica Proposizionale (PL) e dell
 
 ## 3. Definizioni Semantiche e Teoria dei Modelli
 
-* **Tautologia:** Una formula ben formata (fbf) che risulta stabilmente **vera sotto qualsiasi valutazione** o assegnazione di valori di verità (es. $P \vee \neg P$).
-* **Contraddizione:** Una formula ben formata che risulta stabilmente **falsa in ogni possibile valutazione** (es. $P \wedge \neg P$).
-* **Contingente:** Una formula il cui valore di verità non è costante: risulta vera in alcune valutazioni e falsa in altre (es. $P \rightarrow Q$).
-* **Argomento Corretto (Sound):** Un argomento che, oltre a essere logicamente valido (la verità delle premesse garantisce la verità della conclusione), possiede premesse che sono **effettivamente vere nel mondo reale**.
-* **Decidibile:** Una logica per la quale esiste un algoritmo meccanico effettivo in grado di stabilire, in un numero finito di passi, se una formula qualsiasi sia valida o meno. (La logica proposizionale è decidibile tramite tavole di verità; la logica dei predicati non lo è).
-* **Correttezza (Soundness sintattica):** Se $\Gamma \vdash \varphi$ allora $\Gamma \models \varphi$. Garantisce che il sistema deduttivo sia affidabile: se una formula è dimostrabile formalmente tramite regole sintattiche, allora è anche semanticamente vera in tutti i modelli.
-* **Completezza:** Se $\Gamma \models \varphi$ allora $\Gamma \vdash \varphi$. Garantisce che il sistema sia potente: tutte le verità logiche (valide semanticamente) possiedono una via di dimostrazione formale all'interno del calcolo sintattico.
+# Appunti di Logica (PL e QL)
+
+## Concetti Fondamentali
+
+* **Forma valida:** Tutte le esemplificazioni dell'argomento sono valide.
+* **Argomento valido:** Almeno una forma dell'argomento è valida (es. $P \rightarrow Q, P \vdash Q$).
+* **Argomento Logicamente valido:** La validità dipende esclusivamente dal significato delle costanti logiche presenti in PL e QL.
+  * *Esempio:* $Fa \vdash \exists x Fx$
+  * *Nota:* Non dipende da termini non logici come "primo", "Superman", "più alto di".
+  * *Nota:* Se Argomento Logicamente valido allora Argomento valido.
+* **Argomento Tautologicamente valido (PL):** La validità dipende solo dal significato delle costanti logiche in PL.
+  * *Esempio:* $P \wedge Q \vdash P$
+  * *Nota:* Non dipende da concetti atomici o predicati come "primo" o "Superman".
+  * *Nota:* Se Argomento Tautologicamente valido allora Argomento Logicamente valido.
+* **Corretto (Sound):** L'argomento è formalmente valido **e** le sue premesse sono tutte vere nel mondo attuale.
+  * *Esempio:* Tutti gli uomini sono mortali. Socrate è un uomo. Dunque Socrate è mortale.
+* **Forma argomentativa:** Uno schema astratto ottenuto sostituendo gli enunciati con variabili logiche (es. $P \rightarrow Q, P \vdash Q$).
+* **Esemplificazione:** Un argomento concreto ottenuto sostituendo le variabili logiche con enunciati reali.
+  * *Esempio:* "Se piove mi bagno. Piove. Quindi mi bagno."
+
+---
+
+## Tipologie di Fbf (Formule Ben Formate)
+
+> **Fbf:** Formula ben formata che segue le regole sintattiche della logica.
+
+* **Tautologia:** Fbf vera in ogni valutazione. 
+    $$\vDash P \vee \neg P$$
+* **Contraddizione:** Fbf falsa in ogni valutazione. 
+    $$\vDash \neg(P \wedge \neg P)$$
+* **Contingente:** Fbf vera in alcune valutazioni e falsa in altre (il valore dipende dalle variabili). 
+    $$P \rightarrow Q$$
+* **Tautologicamente equivalenti:** Quando la formula $\phi \leftrightarrow \psi$ è una tautologia (stessa tavola di verità). 
+    $$P \rightarrow Q \equiv \neg P \vee Q$$
+
+---
+
+## Insiemi di Formule
+
+* **Coerente:** Esiste almeno una valutazione che rende VERE tutte le formule dell'insieme contemporaneamente.
+    $$\{P, P \rightarrow Q\} \implies P=V, Q=V$$
+* **Incoerente:** Non esiste alcuna valutazione che renda vere tutte le formule insieme.
+    $$\{P, \neg P\} \implies \text{Impossibile}$$
+
+---
+
+## Proprietà dei Sistemi Logici
+
+### Completezza Funzionale
+* **Funzionalmente completo:** Insieme di connettivi in grado di esprimere qualsiasi funzione di verità. 
+    * *Esempi:* $\{\neg, \wedge\}$ oppure il solo $\{\text{NAND}\}$.
+* **Funzionalmente ridondante:** Insieme completo che contiene connettivi superflui. 
+    * *Esempio:* $\{\neg, \wedge, \vee\}$ (dove il $\vee$ si può ricavare da $\neg$ e $\wedge$).
+
+### Funzione di Verità & Decidibilità
+* **Funzione di verità:** Funzione che a $n$ valori di verità associa un valore di verità (es. $2^n$).
+* **Decidibile:** Esiste un metodo meccanico (algoritmo) che in tempo finito risponde SÌ/NO.
+    * **PL:** Sì (es. tavole di verità).
+    * **QL:** No (indecidibile al primo ordine).
+
+---
+
+## Metateoremi Principali
+
+### Correttezza (Soundness)
+La sintassi rispetta la semantica. Se una formula è dimostrabile, allora è vera in tutti i modelli.
+$$\text{Se } \Gamma \vdash \phi \text{ allora } \Gamma \vDash \phi$$
+> *Direzione:* Dalla dimostrazione (sintassi) alla verità nei modelli (semantica).
+
+### Completezza (Completeness)
+La semantica è coperta dalla sintassi. Se una formula è vera in tutti i modelli, allora è dimostrabile.
+$$\text{Se } \Gamma \vDash \phi \text{ allora } \Gamma \vdash \phi$$
+> *Direzione:* Dalla verità nei modelli (semantica) alla dimostrazione (sintassi).
+
+---
+
+## Teoremi e Logica dei Predicati (QL)
+
+* **Teorema:** Formula dimostrabile a partire dall'insieme vuoto di premesse.
+    $$\vdash P \rightarrow P \quad \text{oppure} \quad \vdash P \vee \neg P$$
+* **Verità logica:** Formula vera in ogni modello.
+    $$\forall x (x = x) \implies \text{"Tutto è identico a se stesso"}$$
+* **Logicamente equivalenti (QL):** Quando $\phi \leftrightarrow \psi$ è una verità logica.
+    $$\neg \forall x Fx \equiv \exists x \neg Fx$$
+
+---
+
+## Filosofia del Linguaggio & Semantica
+
+### Uso vs Menzione
+* **Uso:** Si usa l'espressione per parlare del mondo. (es. *Il gatto è sul letto*).
+* **Menzione:** Si parla dell'espressione stessa. Richiede l'uso delle virgolette. (es. *"Gatto"* ha cinque lettere).
+
+### Riferimento e Sostituzione
+* **Coreferenziali:** Termini diversi che si riferiscono allo stesso identico oggetto del mondo. 
+    * *Esempio:* "Espero" e "Fosforo" (entrambi si riferiscono al pianeta Venere).
+* **Salva Veritate:** Principio per cui due termini coreferenziali sono sostituibili in una frase senza cambiarne il valore di verità.
+    * *Contesto estensionale:* "8 è pari" (Vero). Sostituendo con "Il numero dei pianeti" $\rightarrow$ Diventa opaco/falso in base al contesto conoscitivo.
+
+### Quantifier Shift (Fallacia)
+Inversione ingiustificata dell'ordine dei quantificatori.
+* *Premessa:* "Ogni evento ha una causa". ($\forall x \exists y$)
+* *Conclusione fallace:* "Esiste una singola causa per tutti gli eventi". ($\exists y \forall x$)
 
 ---
 
@@ -58,17 +152,50 @@ Gli alberi semantici verificano la consistenza di un insieme di formule cercando
 > 4. Regole Universali ($\forall$) $\rightarrow$ *Si applicano e riapplicano su tutte le costanti note nel ramo.*
 
 ### Meccanismi di Sviluppo dei Nodi:
-* **Doppia Negazione:** Da $\neg\neg P$ si ricava direttamente $P$ (sviluppo lineare).
-* **Congiunzione ($P \wedge Q$):** Non ramifica. Si trascrivono le fbf componenti $P$ e $Q$ l'una sotto l'altro sullo stesso percorso.
-* **Disgiunzione ($P \vee Q$):** Ramifica. L'albero si sdoppia in due percorsi paralleli: il ramo sinistro esplora lo scenario in cui è vera $P$, il ramo destro lo scenario in cui è vera $Q$.
-* **Condizionale ($P \rightarrow Q$):** Ramifica. Si scompone nell'alternativa logica: o è falso l'antecedente ($\neg P$) o è vero il conseguente ($Q$).
-* **Condizionale Negato ($\neg(P \rightarrow Q)$):** Non ramifica. Rappresenta l'unico caso di falsità dell'implicazione: si trascrivono in colonna l'antecedente vero ($P$) e il conseguente falso ($\neg Q$).
-* **Bicondizionale ($P \leftrightarrow Q$):** Ramifica in due coppie. Rappresenta la richiesta di equivalenza: o sono veri entrambi $[P, Q]$ (ramo sinistro) o sono falsi entrambi $[\neg P, \neg Q]$ (ramo destro).
-* **Esistenziale ($\exists x P(x)$):** Si istanzia la proprietà eliminando il quantificatore e sostituendo la variabile $x$ con un nome di costante (es. $c$) che **non deve essere mai apparso prima** nel ramo corrente.
-* **Universale ($\forall x P(x)$):** Si istanzia la proprietà su una costante esistente o su un termine generico. La regola resta attiva e riutilizzabile se vengono introdotte nuove costanti successivamente.
-* **Identità Negata ($\neg x = y$):** Viene assimilata a una fbf complessa di tipo $\neg(x=y)$. Genera la chiusura del ramo ($\times$) se nello stesso tracciato compare l'affermazione diretta di identità $x=y$.
+# Struttura dei Tableaux Logici
 
----
+Le regole di sviluppo si dividono in **lineari** (sviluppo verticale nello stesso percorso) e **ramificanti** (sdoppiamento del percorso in scenari alternativi).
+
+# Alberi Semantici
+
+## Regole NON Ramificanti (ramo unico)
+
+| Formula | Risultato |
+|--------|-----------|
+| $\neg\neg P$ | $P$ |
+| $P \land Q$ | $P, Q$ |
+| $\neg(P \lor Q)$ | $\neg P, \neg Q$ |
+| $\neg(P \to Q)$ | $P, \neg Q$ |
+
+## Regole Ramificanti (due rami)
+
+| Formula | Ramo sinistro | Ramo destro |
+|--------|---------------|-------------|
+| $P \lor Q$ | $P$ | $Q$ |
+| $P \to Q$ | $\neg P$ | $Q$ |
+| $\neg(P \land Q)$ | $\neg P$ | $\neg Q$ |
+| $P \leftrightarrow Q$ | $P, Q$ | $\neg P, \neg Q$ |
+| $\neg(P \leftrightarrow Q)$ | $P, \neg Q$ | $\neg P, Q$ |
+
+## Quantificatori
+
+| Formula | Risultato | Note |
+|--------|-----------|------|
+| $\exists x\, P(x)$ | $P(c)$ | $c$ costante nuova |
+| $\neg\forall x\, P(x)$ | $\exists x\, \neg P(x)$ | si riduce a esistenziale |
+| $\neg\exists x\, P(x)$ | $\forall x\, \neg P(x)$ | si riduce a universale |
+| $\forall x\, P(x)$ | $P(*)$ | ogni termine già presente, riapplicabile |
+
+## Priorità di Applicazione
+
+| Priorità | Regole | Motivo |
+|----------|--------|--------|
+| 1 — **prima** | Regole non ramificanti | Non aumentano i rami, semplificano subito |
+| 2 — **poi** | Esistenziali $\exists$ e $\neg\forall$ | Introducono una costante nuova, non ramificano |
+| 3 — **dopo** | Regole ramificanti | Moltiplicano i rami, meglio rimandare |
+| 4 — **ultima** | Universali $\forall$ e $\neg\exists$ | Riapplicabili con ogni nuovo termine, usare per ultimi |
+
+> **Nota:** $\neg x = y \equiv \neg(x = y)$
 
 ## 5. Deduzione Naturale
 
