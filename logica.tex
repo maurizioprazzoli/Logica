@@ -1,0 +1,756 @@
+\documentclass[10pt,a4paper]{article}
+
+% --- Pacchetti ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small\texttt{Maurizio Prazzoli - maurizio.prazzoli1@studenti.unipr.it - Matricola 378685 - https://github.com/maurizioprazzoli/Logica} \quad|\quad \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\geometry{
+  top=1.8cm, bottom=1.8cm,
+  left=2cm, right=2cm
+}
+
+% --- Colori ---
+\definecolor{primaryblue}{RGB}{30, 80, 160}
+\definecolor{lightblue}{RGB}{220, 232, 250}
+\definecolor{warnyellow}{RGB}{255, 248, 220}
+\definecolor{warnborder}{RGB}{200, 160, 0}
+\definecolor{greenbg}{RGB}{230, 248, 235}
+\definecolor{greenborder}{RGB}{40, 150, 60}
+\definecolor{redbg}{RGB}{255, 235, 235}
+\definecolor{redborder}{RGB}{180, 40, 40}
+
+% --- Stile titoli ---
+\titleformat{\section}[block]
+  {\large\bfseries\color{primaryblue}}
+  {\thesection.}{0.5em}{}
+  [\vspace{-0.3em}\rule{\linewidth}{0.8pt}]
+
+\titleformat{\subsection}[block]
+  {\normalsize\bfseries\color{primaryblue!80!black}}
+  {\thesubsection.}{0.4em}{}
+
+\titlespacing{\section}{0pt}{0.8em}{0.3em}
+\titlespacing{\subsection}{0pt}{0.5em}{0.2em}
+
+% --- Ambienti personalizzati ---
+\newmdenv[
+  backgroundcolor=lightblue,
+  linecolor=primaryblue,
+  linewidth=1pt,
+  topline=true, bottomline=true, leftline=true, rightline=true,
+  innertopmargin=4pt, innerbottommargin=4pt,
+  innerleftmargin=6pt, innerrightmargin=6pt,
+  skipabove=4pt, skipbelow=4pt
+]{definizione}
+
+\newmdenv[
+  backgroundcolor=warnyellow,
+  linecolor=warnborder,
+  linewidth=1pt,
+  innertopmargin=4pt, innerbottommargin=4pt,
+  innerleftmargin=6pt, innerrightmargin=6pt,
+  skipabove=4pt, skipbelow=4pt
+]{attenzione}
+
+\newmdenv[
+  backgroundcolor=greenbg,
+  linecolor=greenborder,
+  linewidth=1pt,
+  innertopmargin=4pt, innerbottommargin=4pt,
+  innerleftmargin=6pt, innerrightmargin=6pt,
+  skipabove=4pt, skipbelow=4pt
+]{esempio}
+
+% --- Comandi matematici shorthand ---
+\newcommand{\nec}{\Box}
+\newcommand{\pos}{\Diamond}
+\newcommand{\entails}{\vDash}
+\newcommand{\proves}{\vdash}
+\newcommand{\liff}{\leftrightarrow}
+
+% --- Sopprime numerazione sezioni ---
+\setcounter{secnumdepth}{2}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\begin{center}
+  {\LARGE\bfseries\color{primaryblue} Logica}\\[4pt]
+  {\large Logica Proposizionale (PL) e dei Predicati (QL)}\\[2pt]
+  {\small !! Le formule possono contenere errori !! \quad|\quad
+   \textit{Nota: le regole \textbf{derivate} non sono ammesse all'esame.}}
+\end{center}
+
+\vspace{0.5em}
+\hrule
+\vspace{0.8em}
+
+
+% ============================================================
+\section{Glossario delle Definizioni Teoriche}
+% ============================================================
+
+% Ambiente per le voci del glossario
+\newcommand{\voce}[3]{%
+  \noindent\begin{mdframed}[
+    backgroundcolor=lightblue!60,
+    linecolor=primaryblue,
+    linewidth=0.6pt,
+    innertopmargin=5pt, innerbottommargin=5pt,
+    innerleftmargin=8pt, innerrightmargin=8pt,
+    skipabove=3pt, skipbelow=3pt
+  ]
+  {\bfseries\color{primaryblue} #1}%
+  \ifx&#2&\else\quad{\small\itshape(#2)}\fi\\[2pt]
+  #3
+  \end{mdframed}%
+}
+
+\voce{Forma argomentativa}{}
+{Schema astratto ottenuto sostituendo gli enunciati con variabili logiche.\\
+\textit{Es.} $P \to Q,\; P \vdash Q$}
+
+\voce{Esemplificazione}{}
+{Argomento concreto ottenuto sostituendo le variabili logiche con enunciati reali.\\
+\textit{Es.} ``Se piove mi bagno. Piove. Quindi mi bagno.''}
+
+\voce{Forma valida}{}
+{Forma argomentativa le cui \emph{tutte} le esemplificazioni sono argomenti validi.}
+
+\voce{Argomento valido}{}
+{Argomento di cui \emph{almeno una} forma è valida: è impossibile che le premesse siano vere e la conclusione falsa.\\
+\textit{Es.} $P, Q \vdash P$ \quad e \quad $P, Q \vdash R$ (quest'ultimo solo se $R$ segue dalle premesse).\\
+\textit{Es.} ``Pm, Ug solo se Pa. Dunque Pm.''}
+
+\voce{Logicamente valido}{}
+{La validità dipende \emph{esclusivamente} dal significato delle costanti logiche di PL e QL.
+Non dipende dal significato di termini come ``primo'', ``Superman'', ``più alto di''.\\
+\textit{Es.} $Fa \vdash \exists x\,Fx$ \qquad \textit{Non es.} $Fa \vdash Q$ (dipende da $Q$)}
+
+\voce{Tautologicamente valido (PL)}{}
+{La validità dipende solo dal significato delle costanti logiche di PL.
+Non dipende da concetti atomici o predicati.\\
+\textit{Es.} $P \land Q \vdash P$\\
+\textbf{Gerarchia:} Taut.\ valido $\Rightarrow$ Log.\ valido $\Rightarrow$ Valido}
+
+\voce{Corretto}{\textit{sound}}
+{L'argomento è formalmente \textbf{valido} \emph{e} le premesse sono tutte \textbf{vere nel mondo attuale}.\\
+\textit{Es.} ``Tutti gli uomini sono mortali. Socrate è un uomo. Dunque Socrate è mortale.''}
+
+\voce{Fbf --- Formula Ben Formata}{}
+{Formula sintaticamente corretta, costruita rispettando le regole grammaticali del linguaggio logico.}
+
+\voce{Tautologia}{}
+{Fbf vera in \emph{ogni} valutazione possibile delle variabili.\\
+\textit{Es.} $P \lor \lnot P$ \quad (tertium non datur)}
+
+\newpage
+\voce{Contraddizione}{}
+{Fbf falsa in \emph{ogni} valutazione possibile delle variabili.\\
+\textit{Es.} $P \land \lnot P$}
+
+\voce{Contingente}{}
+{Fbf vera in alcune valutazioni e falsa in altre: il valore dipende dalle variabili.\\
+\textit{Es.} $P \to Q$ (valore dipende dai valori di $P$ e $Q$)}
+
+\voce{Tautologicamente equivalenti}{}
+{Due formule $\phi$ e $\psi$ tali che $\phi \leftrightarrow \psi$ è una tautologia (stessa tavola di verità).\\
+\textit{Es.} $P \to Q \equiv \lnot P \lor Q$}
+
+\voce{Insieme coerente}{}
+{Esiste almeno una valutazione che rende \emph{vere contemporaneamente} tutte le formule dell'insieme.\\
+\textit{Es.} $\{P,\; P \to Q\}$: basta $P{=}V,\; Q{=}V$}
+
+\voce{Insieme incoerente}{}
+{Non esiste \emph{nessuna} valutazione che renda vere tutte le formule insieme.\\
+\textit{Es.} $\{P,\; \lnot P\}$: impossibile}
+
+\voce{Funzionalmente completo}{}
+{Insieme di connettivi capace di esprimere \emph{qualsiasi} funzione di verità.\\
+\textit{Es.} $\{\lnot,\, \land\}$ oppure $\{\text{NAND}\}$}
+
+\voce{Funzionalmente ridondante}{}
+{Insieme funzionalmente completo che contiene connettivi superflui (esprimibili dagli altri).\\
+\textit{Es.} $\{\lnot,\, \land,\, \lor\}$: il $\lor$ si ottiene da $\lnot$ e $\land$}
+
+\voce{Funzione di verità}{}
+{Funzione che a $n$ valori di verità in ingresso associa un unico valore di verità in uscita.
+Con $n$ variabili esistono $2^{2^n}$ funzioni di verità distinte.}
+
+\voce{Decidibile}{}
+{Esiste un algoritmo (metodo meccanico) che in \emph{tempo finito} risponde Sì/No ad ogni domanda del sistema.\\
+\textbf{PL:} decidibile (tavole di verità, alberi semantici).\\
+\textbf{QL:} \emph{indecidibile} al primo ordine: se un argomento è \textbf{valido},
+la deduzione naturale lo dimostrerà in tempo finito (completezza);
+ma se è \textbf{invalido}, la ricerca di un contromodello può non terminare mai.}
+
+\voce{Correttezza}{\textit{soundness}}
+{Se una formula è dimostrabile sintatticamente, allora è vera in tutti i modelli.\\
+$\text{Se } \Gamma \vdash \phi \;\Longrightarrow\; \Gamma \vDash \phi$\\
+Direzione: \textbf{sintassi $\to$ semantica} (dimostrazione $\to$ verità nei modelli)}
+
+\newpage
+\voce{Completezza}{\textit{completeness}}
+{Se una formula è vera in tutti i modelli, allora è dimostrabile sintatticamente.\\
+$\text{Se } \Gamma \vDash \phi \;\Longrightarrow\; \Gamma \vdash \phi$\\
+Direzione: \textbf{semantica $\to$ sintassi} (verità nei modelli $\to$ dimostrazione)\\
+\textit{Nota:} completezza $\neq$ decidibilità: in QL, se un argomento è \emph{invalido},
+non esiste garanzia algoritmica di dimostrarlo.}
+
+\voce{Teorema}{}
+{Formula dimostrabile a partire dall'\emph{insieme vuoto} di premesse: $\vdash \phi$.\\
+\textit{Es.} $\vdash P \to P$ \quad e \quad $\vdash P \lor \lnot P$}
+
+\voce{Verità logica}{}
+{Formula vera in \emph{ogni modello} (PL: ogni valutazione; QL: ogni struttura con qualsiasi dominio).\\
+\textit{Es.} $\forall x\,(x{=}x)$: ``tutto è identico a se stesso''}
+
+\voce{Logicamente equivalenti (QL)}{}
+{Due formule $\phi$ e $\psi$ tali che $\phi \leftrightarrow \psi$ è una \emph{verità logica}.\\
+\textit{Es.} $\lnot\forall x\,Fx \equiv \exists x\,\lnot Fx$}
+
+\voce{Uso}{}
+{Si usa l'espressione per parlare del \emph{mondo}.\\
+\textit{Es.} Il gatto è sul letto. \quad (si usa ``gatto'' per riferirsi all'animale)}
+
+\voce{Menzione}{}
+{Si parla dell'espressione stessa come oggetto linguistico. Richiede le \textbf{virgolette}.\\
+\textit{Es.} ``Gatto'' ha cinque lettere. \quad (si menziona la parola, non l'animale)}
+
+\voce{Coreferenziali}{}
+{Termini diversi che si riferiscono allo stesso oggetto nel mondo.\\
+\textit{Es.} ``Espero'' e ``Fosforo'' (entrambi denotano il pianeta Venere)}
+
+\voce{Salva veritate}{}
+{Principio per cui termini coreferenziali sono sostituibili in certi contesti senza alterare il valore di verità.\\
+Valido in contesti \textbf{estensionali}; \textbf{non valido} in contesti \emph{intensionali} (modalità, credenze, ecc.).\\
+\textit{Es.} ``8 è pari'' (vero). Sostituendo ``il numero dei pianeti'' al posto di ``8'':
+``Il numero dei pianeti è pari'' --- valore di verità dipende dal contesto conoscitivo.\\
+\textbf{Opacità referenziale:} contesti in cui la sostituzione \emph{non} preserva il valore di verità.}
+
+\voce{Quantifier Shift}{\textit{fallacia}}
+{Inversione ingiustificata dell'ordine dei quantificatori: da $\forall x\,\exists y$ si conclude erroneamente $\exists y\,\forall x$.\\
+\textit{Premessa valida:} ``Ogni evento ha una causa.'' \; $\forall x\,\exists y\,\text{Causa}(y,x)$\\
+\textit{Conclusione fallace:} ``Esiste una causa per tutti gli eventi.'' \; $\exists y\,\forall x\,\text{Causa}(y,x)$}
+
+
+
+% ============================================================
+\newpage
+\section{Struttura degli Argomenti}
+% ============================================================
+
+Un argomento è composto da \textbf{premesse} (ragioni) e una \textbf{conclusione}
+(l'enunciato derivato).
+
+\subsection*{Indicatori di Premessa}
+\textit{Infatti, poiché, perché, giacché, siccome, in quanto, dato che,
+visto che, dal momento che, considerato che, la ragione è che.}
+
+\subsection*{Indicatori di Conclusione}
+\textit{Quindi, dunque, perciò, pertanto, così, ragion per cui,
+di conseguenza, stando così le cose, ne segue che, se ne deduce che,
+in conclusione.}
+
+% ============================================================
+\newpage
+\section{Tipologie di Argomenti}
+% ============================================================
+
+\begin{definizione}
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item \textbf{Valido:} Almeno una forma dell'argomento è valida.\\
+    Es.\ $P \to Q,\; P \proves Q$
+  \item \textbf{Logicamente valido:} Validità dipende \emph{solo} dalle
+    costanti logiche di PL/QL.\\
+    Es.\ $Fa \proves \exists x\, Fx$
+  \item \textbf{Tautologicamente valido (PL):} Validità dipende solo
+    dalle costanti logiche di PL.\\
+    Es.\ $P \land Q \proves P$
+  \item \textbf{Corretto (\textit{Sound}):} Valido \emph{e} premesse
+    tutte vere nel mondo attuale.
+\end{itemize}
+\end{definizione}
+
+\textbf{Gerarchia:}
+$\text{Taut.\ valido} \Rightarrow \text{Log.\ valido} \Rightarrow \text{Valido}$
+
+% ============================================================
+\newpage
+\section{Tipologie di Formule Ben Formate}
+% ============================================================
+
+\begin{definizione}
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item \textbf{Tautologia:} Vera in \emph{ogni} valutazione.
+    $\entails P \lor \lnot P$
+  \item \textbf{Contraddizione:} Falsa in \emph{ogni} valutazione.
+    $\entails \lnot(P \land \lnot P)$
+  \item \textbf{Contingente:} Vera in alcune valutazioni, falsa in altre.
+    Es.\ $P \to Q$
+  \item \textbf{Insiemi coerenti:} Esiste almeno una valutazione che
+    rende vere \emph{tutte} le formule dell'insieme simultaneamente.
+  \item \textbf{Insiemi incoerenti:} Nessuna valutazione rende vere
+    tutte le formule.
+\end{itemize}
+\end{definizione}
+
+% ============================================================
+\newpage
+\section{Equivalenze Logiche Fondamentali}
+% ============================================================
+
+\subsection{Logica Proposizionale (PL)}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Formula} & \textbf{Equivalente} \\
+  \midrule
+  $\lnot(P \land Q)$ & $\lnot P \lor \lnot Q$ \hfill \textit{De Morgan 1} \\
+  $\lnot(P \lor Q)$ & $\lnot P \land \lnot Q$ \hfill \textit{De Morgan 2} \\
+  $P \to Q$ & $\lnot P \lor Q$ \hfill \textit{Def.\ condizionale} \\
+  $P \to Q$ & $\lnot Q \to \lnot P$ \hfill \textit{Contrapposizione} \\
+  $\lnot(P \to Q)$ & $P \land \lnot Q$ \hfill \textit{Neg.\ condizionale} \\
+  $P$ & $\lnot\lnot P$ \hfill \textit{Doppia negazione} \\
+  $P \land Q$ & $Q \land P$ \hfill \textit{Commutatività} \\
+  $P \land (Q \lor R)$ & $(P \land Q) \lor (P \land R)$ \hfill \textit{Distributiva} \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Logica dei Predicati (QL)}
+
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Formula} & \textbf{Equivalente} \\
+  \midrule
+  $\forall x\, Fx$ & $\lnot\exists x\, \lnot Fx$ \\
+  $\exists x\, Fx$ & $\lnot\forall x\, \lnot Fx$ \\
+  $\forall x\, \lnot Fx$ & $\lnot\exists x\, Fx$ \\
+  $\exists x\, \lnot Fx$ & $\lnot\forall x\, Fx$ \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+\newpage
+\section{Completezza Funzionale, Decidibilità e Metateoremi}
+% ============================================================
+
+\subsection{Completezza Funzionale e Decidibilità}
+
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item \textbf{Funzionalmente completo:} Insieme di connettivi che
+    esprime qualsiasi funzione di verità. Es.\ $\{\lnot, \land\}$
+    oppure $\{\text{NAND}\}$.
+  \item \textbf{Funzionalmente ridondante:} Completo ma con connettivi
+    superflui. Es.\ $\{\lnot, \land, \lor\}$.
+  \item \textbf{PL:} Decidibile (tavole di verità, alberi semantici).
+  \item \textbf{QL:} \emph{Indecidibile} al primo ordine: argomenti validi
+    sono dimostrabili in tempo finito, ma per argomenti invalidi la ricerca
+    di un contromodello può non terminare.
+\end{itemize}
+
+\subsection{Metateoremi: Correttezza e Completezza}
+
+\begin{definizione}
+\begin{itemize}[leftmargin=*, itemsep=2pt, topsep=0pt]
+  \item \textbf{Correttezza (\textit{Soundness}):}
+    Sintassi $\Rightarrow$ Semantica.
+    \[ \text{Se } \Gamma \proves \phi \;\text{ allora }\; \Gamma \entails \phi \]
+  \item \textbf{Completezza (\textit{Completeness}):}
+    Semantica $\Rightarrow$ Sintassi.
+    \[ \text{Se } \Gamma \entails \phi \;\text{ allora }\; \Gamma \proves \phi \]
+\end{itemize}
+\end{definizione}
+
+Valgono per PL e per QL (dimostrazione di completezza per QL: Gödel, 1930).
+
+\begin{attenzione}
+\textbf{Completezza $\neq$ Decidibilità.} Se un argomento è
+\emph{invalido}, non esiste un metodo sintattico garantito per
+dimostrarlo (si cerca un \emph{contromodello}).
+\end{attenzione}
+
+% ============================================================
+\newpage
+\section{Alberi Semantici}
+% ============================================================
+
+Gli alberi semantici (\textit{semantic tableaux}) verificano la validità di un argomento
+per \emph{refutazione}: si inserisce nell'albero l'insieme delle \textbf{premesse più la negazione della conclusione}
+($\Gamma \cup \{\lnot\phi\}$) e si espandono le formule applicando le regole.
+
+\begin{attenzione}
+\begin{itemize}[leftmargin=*, itemsep=2pt, topsep=0pt]
+  \item \textbf{Tutti i rami si chiudono} (ogni ramo contiene $\psi$ e $\lnot\psi$ per qualche $\psi$)\\
+    $\Rightarrow$ l'insieme $\Gamma \cup \{\lnot\phi\}$ è \textbf{inconsistente}
+    $\Rightarrow$ l'argomento è \textbf{valido}.
+  \item \textbf{Almeno un ramo resta aperto}\\
+    $\Rightarrow$ quel ramo fornisce un \textbf{contromodello} esplicito
+    $\Rightarrow$ l'argomento è \textbf{invalido}.
+\end{itemize}
+\end{attenzione}
+
+\textit{Perché funziona?} Se fosse possibile avere le premesse vere e la conclusione falsa
+(cioè $\lnot\phi$ vera), almeno un ramo resterebbe aperto. Chiudere tutti i rami
+dimostra che tale scenario è impossibile.
+
+\subsection{Regole NON Ramificanti}
+
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Formula} & \textbf{Risultato} \\
+  \midrule
+  $\lnot\lnot P$ & $P$ \\
+  $P \land Q$ & $P,\; Q$ \\
+  $\lnot(P \lor Q)$ & $\lnot P,\; \lnot Q$ \\
+  $\lnot(P \to Q)$ & $P,\; \lnot Q$ \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Regole Ramificanti}
+
+\begin{tabular}{@{}lll@{}}
+  \toprule
+  \textbf{Formula} & \textbf{Ramo sx} & \textbf{Ramo dx} \\
+  \midrule
+  $P \lor Q$ & $P$ & $Q$ \\
+  $P \to Q$ & $\lnot P$ & $Q$ \\
+  $\lnot(P \land Q)$ & $\lnot P$ & $\lnot Q$ \\
+  $P \liff Q$ & $P,\; Q$ & $\lnot P,\; \lnot Q$ \\
+  $\lnot(P \liff Q)$ & $P,\; \lnot Q$ & $\lnot P,\; Q$ \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Regole per i Quantificatori}
+
+\begin{tabular}{@{}lll@{}}
+  \toprule
+  \textbf{Formula} & \textbf{Risultato} & \textbf{Note} \\
+  \midrule
+  $\exists x\, P(x)$ & $P(c)$ & $c$ \emph{costante nuova} \\
+  $\lnot\forall x\, P(x)$ & $\exists x\, \lnot P(x)$ & riduzione a $\exists$ \\
+  $\lnot\exists x\, P(x)$ & $\forall x\, \lnot P(x)$ & riduzione a $\forall$ \\
+  $\forall x\, P(x)$ & $P(t)$ & $t$ termine già presente;\\
+                     &        & riapplicabile \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Ordine di Espansione (Priorità)}
+
+\begin{attenzione}
+\begin{enumerate}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item Regole \textbf{non ramificanti} (semplificano senza ramificare).
+  \item Regole \textbf{esistenziali} $\exists$ e $\lnot\forall$
+    (costante nuova, non ramificano).
+  \item Regole \textbf{ramificanti} (moltiplicano i rami).
+  \item Regole \textbf{universali} $\forall$ e $\lnot\exists$
+    (riapplicabili, usare per ultime).
+\end{enumerate}
+\end{attenzione}
+
+% ============================================================
+\newpage
+\section{Deduzione Naturale --- Calcolo Proposizionale}
+% ============================================================
+
+\begin{attenzione}
+\textbf{Le regole derivate NON sono ammesse all'esame.}
+\end{attenzione}
+
+\subsection{Regole Base PL}
+
+% Macro per righe di deduzione: \riga{n}{formula}{giustificazione}
+\newcommand{\riga}[3]{$#1$ & $#2$ & \textit{\small #3} \\}
+% Macro per righe con ipotesi (barra verticale simulata)
+\newcommand{\rigah}[3]{$#1$ & \quad $#2$ & \textit{\small #3} \\}
+
+\renewcommand{\arraystretch}{1.35}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\land$I --- Introduzione della Congiunzione}
+Da $\phi$ e $\psi$ separatamente, si può scrivere $\phi \land \psi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P}{Pre}
+\riga{2}{Q}{Pre}
+\riga{3}{P \land Q}{\(\land\)I: 1, 2}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\land$E --- Eliminazione della Congiunzione}
+Da $\phi \land \psi$ si estrae $\phi$ oppure $\psi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P \land Q}{Pre}
+\riga{2}{P}{\(\land\)E: 1}
+\riga{3}{Q}{\(\land\)E: 1}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\lor$I --- Introduzione della Disgiunzione}
+Da $\phi$ si ottiene $\phi \lor \psi$ (indebolimento).
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P}{Pre}
+\riga{2}{P \lor Q}{\(\lor\)I: 1}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\lor$E --- Eliminazione della Disgiunzione}
+Da $\phi \lor \psi$, se da $\phi$ segue $\chi$ e da $\psi$ segue $\chi$, allora $\chi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P \lor Q}{Pre}
+\riga{2}{P \to R}{Pre}
+\riga{3}{Q \to R}{Pre}
+\riga{4}{R}{\(\lor\)E: 1, 2, 3}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\to$E --- Eliminazione del Condizionale (Modus Ponens)}
+Da $\phi \to \psi$ e $\phi$, si ottiene $\psi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P \to Q}{Pre}
+\riga{2}{P}{Pre}
+\riga{3}{Q}{\(\to\)E: 1, 2}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\to$I / CP --- Introduzione del Condizionale (Conditional Proof)}
+Si apre un'ipotesi $\phi$; se si riesce a derivare $\psi$, si scarica l'ipotesi
+e si ottiene $\phi \to \psi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P \to Q}{Pre}
+\rigah{2}{\mid\; Q \to R}{Supp}
+\rigah{3}{\mid\; R}{\(\to\)E: 1 (\textit{con P})\ldots}
+\riga{4}{(Q \to R) \to R}{CP: 2--3}
+\end{tabular}
+
+\noindent\textit{Esempio minimo:} $P \vdash Q \to P$
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P}{Pre}
+\rigah{2}{\mid\; Q}{Supp}
+\rigah{3}{\mid\; P}{Rep: 1}
+\riga{4}{Q \to P}{CP: 2--3}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\lnot$E --- Eliminazione della Negazione (Doppia Negazione)}
+Da $\lnot\lnot\phi$ si ottiene $\phi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{\lnot\lnot P}{Pre}
+\riga{2}{P}{\(\lnot\)E: 1}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{$\lnot$I / RAA --- Introduzione della Negazione (Reductio ad Absurdum)}
+Si suppone $\phi$; se si deriva $\bot$, si scarica l'ipotesi e si ottiene $\lnot\phi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P \to \lnot P}{Pre}
+\rigah{2}{\mid\; P}{Supp}
+\rigah{3}{\mid\; \lnot P}{\(\to\)E: 1, 2}
+\rigah{4}{\mid\; \bot}{Abs: 2, 3}
+\riga{5}{\lnot P}{RAA: 2--4}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{Abs --- Assurdo}
+Da $\phi$ e $\lnot\phi$ insieme si ricava $\bot$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P}{Pre}
+\riga{2}{\lnot P}{Pre}
+\riga{3}{\bot}{Abs: 1, 2}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{EFQ / $\bot$E --- \textit{Ex Falso Quodlibet}}
+Da $\bot$ si può derivare qualsiasi formula $\phi$.
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{\bot}{Pre}
+\riga{2}{Q}{EFQ: 1}
+\end{tabular}
+
+% ------------------------------------------------------------------
+\subsubsection*{Rep --- Ripetizione}
+Una formula già presente nella derivazione può essere ricopiata
+(utile all'interno di ipotesi subordinate).
+
+\begin{tabular}{@{}r@{\;\;}l@{\quad}l@{}}
+\riga{1}{P}{Pre}
+\rigah{2}{\mid\; Q}{Supp}
+\rigah{3}{\mid\; P}{Rep: 1}
+\riga{4}{Q \to P}{CP: 2--3}
+\end{tabular}
+
+% ============================================================
+\newpage
+\section{Deduzione Naturale --- Calcolo dei Predicati}
+% ============================================================
+
+\subsection{Regole per i Quantificatori}
+
+\begin{tabular}{@{}p{2.5cm}p{5cm}@{}}
+  \toprule
+  \textbf{Regola} & \textbf{Schema e Vincoli} \\
+  \midrule
+  $\forall$E (Elim.\ univ.) &
+    Da $\forall x\, Fx$ si ottiene $Fa$.
+    \newline \textit{Nessun vincolo: $a$ può essere qualsiasi.} \\
+  $\forall$I (Intr.\ univ.) &
+    Da $Fa$ si ottiene $\forall x\, Fx$.
+    \newline \textbf{Vincolo:} $a$ deve essere \emph{arbitraria},
+    cioè non compare in nessuna assunzione aperta. \\
+  $\exists$I (Intr.\ esist.) &
+    Da $Fa$ si ottiene $\exists x\, Fx$.
+    \newline \textit{Nessun vincolo.} \\
+  $\exists$E (Elim.\ esist.) &
+    Da $\exists x\, Fx$, con derivazione di $\psi$ dall'ipotesi $Fa$,
+    si ottiene $\psi$.
+    \newline \textbf{Vincolo:} $a$ deve essere \emph{completamente nuova}:
+    non in $\exists x\, Fx$, non in $\psi$, non in assunzioni attive. \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Regole per l'Identità}
+
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Regola} & \textbf{Schema} \\
+  \midrule
+  $=$I (Intr.) & $\proves a = a$ (assioma) \\
+  $=$E (Elim.) & Da $a = b$ e $\phi(a)$ si ottiene $\phi(b)$ \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+\newpage
+\section{Schemi di Traduzione in QL}
+% ============================================================
+
+\subsection{Quadrato Aristotelico}
+
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  \textbf{Enunciato} & \textbf{Formalizzazione} \\
+  \midrule
+  Tutti i $P$ sono $Q$ &
+    $\forall x\,(Px \to Qx)$ \\
+  Alcuni $P$ sono $Q$ &
+    $\exists x\,(Px \land Qx)$ \\
+  Nessun $P$ è $Q$ &
+    $\forall x\,(Px \to \lnot Qx)$ \\
+  Non tutti i $P$ sono $Q$ &
+    $\exists x\,(Px \land \lnot Qx)$ \\
+  \bottomrule
+\end{tabular}
+
+\subsection{Identità e Numeriche}
+
+\begin{tabular}{@{}p{4cm}p{3.8cm}@{}}
+  \toprule
+  \textbf{Enunciato} & \textbf{Formalizzazione} \\
+  \midrule
+  Solo $a$ è $P$ &
+    $\forall x\,(Px \liff x{=}a)$ \\
+  Solo $a$ e $b$ sono $P$ &
+    $\forall x\,(Px \liff (x{=}a \lor x{=}b))$ \\
+  Esattamente un $P$ &
+    $\exists x\,(Px \land \forall y\,(Py \to y{=}x))$ \\
+  Almeno due $P$ &
+    $\exists x\,\exists y\,(Px \land Py \land x{\neq}y)$ \\
+  Al massimo un $P$ &
+    $\forall x\,\forall y\,((Px \land Py) \to x{=}y)$ \\
+  Al massimo due $P$ &
+    $\forall x\,\forall y\,\forall z\,((Px \land Py \land Pz)$ \\
+    & $\to (x{=}y \lor x{=}z \lor y{=}z))$ \\
+  Tutti i $P$ tranne $a$ sono $Q$ &
+    $Pa \land \lnot Qa \land {}$ \\
+    & $\forall x\,((Px \land x{\neq}a) \to Qx)$ \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+\newpage
+\section{Filosofia del Linguaggio}
+% ============================================================
+
+\subsection{Uso vs.\ Menzione}
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item \textbf{Uso:} Si usa l'espressione per parlare del mondo.
+    Es.\ \textit{Il gatto è sul letto.}
+  \item \textbf{Menzione:} Si parla dell'espressione stessa
+    (richiede le virgolette).
+    Es.\ \textit{``Gatto''} ha cinque lettere.
+\end{itemize}
+
+\subsection{Coreferenzialità e Salva Veritate}
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item \textbf{Coreferenziali:} Termini diversi che denotano lo stesso
+    oggetto. Es.\ ``Espero'' e ``Fosforo'' (entrambi = Venere).
+  \item \textbf{Salva veritate:} Termini coreferenziali sono
+    sostituibili in contesti \emph{estensionali} senza cambiare il
+    valore di verità. \textbf{Falso} in contesti intensionali
+    (modalità, credenze, ecc.).
+\end{itemize}
+
+\subsection{Fallacia del Quantifier Shift}
+
+\begin{attenzione}
+Inversione ingiustificata dei quantificatori.\\
+\textit{Premessa:} $\forall x\,\exists y\,(\text{y causa x})$\\
+\textit{Conclusione fallace:} $\exists y\,\forall x\,(\text{y causa x})$
+\end{attenzione}
+
+
+% ============================================================
+\newpage
+\section{Riepilogo: Semantica dei Modelli (QL)}
+% ============================================================
+
+\begin{definizione}
+\textbf{Modello} $\mathcal{M} = \langle D, I \rangle$:
+\begin{itemize}[leftmargin=*, itemsep=1pt, topsep=0pt]
+  \item $D$: dominio non vuoto di individui.
+  \item $I$: funzione di interpretazione che assegna denotata a
+    costanti individuali e estensioni a lettere predicative.
+\end{itemize}
+\textbf{Verità logica:} formula vera in \emph{ogni} modello.\\
+\textbf{Equivalenza logica (QL):} $\phi \liff \psi$ è una verità logica.\\
+\textbf{Teorema (QL):} formula dimostrabile dall'insieme vuoto di premesse.
+\end{definizione}
+
+
+
+\vspace{0.5em}
+\hrule
+\vspace{0.3em}
+
+\end{document}
