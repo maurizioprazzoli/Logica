@@ -2,7 +2,7 @@
 
 ---
 
-## 1. Indicatori Argomentativi e Struttura
+# 1. Indicatori Argomentativi e Struttura
 Un argomento in logica si compone di premesse (le ragioni) e conclusioni (l'enunciato derivato). Identificarli correttamente è fondamentale per la formalizzazione:
 
 * **Indicatori di Premessa:** Introducono i dati a supporto dell'argomentazione.
@@ -12,7 +12,7 @@ Un argomento in logica si compone di premesse (le ragioni) e conclusioni (l'enun
 
 ---
 
-## 2. Equivalenze Logiche Fondamentali
+# 2. Equivalenze Logiche Fondamentali
 
 Le equivalenze logiche collegano formule della Logica Proposizionale (PL) e della Logica dei Predicati (QL) che condividono stabilmente gli stessi valori di verità.
 
@@ -33,9 +33,7 @@ Le equivalenze logiche collegano formule della Logica Proposizionale (PL) e dell
 
 ---
 
-## 3. Definizioni Semantiche e Teoria dei Modelli
-
-# Appunti di Logica (PL e QL)
+# 3. Definizioni Semantiche e Teoria dei Modelli
 
 ## Concetti Fondamentali
 
@@ -141,7 +139,7 @@ Inversione ingiustificata dell'ordine dei quantificatori.
 
 ---
 
-## 4. Alberi Semantici (Regole di Espansione)
+# 4. Alberi Semantici (Regole di Espansione)
 
 Gli alberi semantici verificano la consistenza di un insieme di formule cercando un controesempio. Se tutti i rami si chiudono incontrando una contraddizione esplicita ($P$ e $\neg P$), la formula analizzata (o la negazione della conclusione) è inconsistente.
 
