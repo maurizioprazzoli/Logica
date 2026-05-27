@@ -97,7 +97,7 @@
 \begin{center}
   {\LARGE\bfseries\color{primaryblue} Logica}\\[4pt]
   {\large Logica Proposizionale (PL) e dei Predicati (QL)}\\[2pt]
-  {\small !! Le formule possono contenere errori !! - v.1.0\quad|\quad
+  {\small !! Le formule possono contenere errori !! - v.1.1\quad|\quad
    \textit{Nota: le regole \textbf{derivate} non sono ammesse all'esame.}}
 \end{center}
 
@@ -314,6 +314,129 @@ $\text{Taut.\ valido} \Rightarrow \text{Log.\ valido} \Rightarrow \text{Valido}$
     tutte le formule.
 \end{itemize}
 \end{definizione}
+
+
+% ============================================================
+\newpage
+\section{Tavole di Verità}
+% ============================================================
+
+Le tavole di verità definiscono il comportamento di ciascun connettivo logico
+elencando tutti i possibili valori di verità degli operandi e il
+corrispondente valore della formula composta.
+
+\subsection{Negazione --- $\lnot P$}
+
+Inverte il valore di verità: vero diventa falso e viceversa.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{c|c}
+  \toprule
+  $P$ & $\lnot P$ \\
+  \midrule
+  V & F \\
+  F & V \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Congiunzione --- $P \land Q$}
+
+Vera \emph{solo} quando \textbf{entrambi} gli operandi sono veri.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cc|c}
+  \toprule
+  $P$ & $Q$ & $P \land Q$ \\
+  \midrule
+  V & V & V \\
+  V & F & F \\
+  F & V & F \\
+  F & F & F \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Disgiunzione (inclusiva) --- $P \lor Q$}
+
+Vera quando \textbf{almeno uno} degli operandi è vero.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cc|c}
+  \toprule
+  $P$ & $Q$ & $P \lor Q$ \\
+  \midrule
+  V & V & V \\
+  V & F & V \\
+  F & V & V \\
+  F & F & F \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Condizionale (implicazione materiale) --- $P \to Q$}
+
+Falsa \emph{solo} quando l'antecedente è vero e il conseguente è falso.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cc|c}
+  \toprule
+  $P$ & $Q$ & $P \to Q$ \\
+  \midrule
+  V & V & V \\
+  V & F & F \\
+  F & V & V \\
+  F & F & V \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{attenzione}
+Il condizionale materiale è \textbf{vero per vacuità} quando l'antecedente è falso
+(\textit{ex falso quodlibet}).
+Questa è la riga che crea più confusione: $F \to Q$ è sempre $V$, indipendentemente da $Q$.
+\end{attenzione}
+
+\subsection{Bicondizionale --- $P \liff Q$}
+
+Vera quando entrambi gli operandi hanno lo \textbf{stesso} valore di verità.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cc|c}
+  \toprule
+  $P$ & $Q$ & $P \liff Q$ \\
+  \midrule
+  V & V & V \\
+  V & F & F \\
+  F & V & F \\
+  F & F & V \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Riepilogo Compatto}
+
+Tavola riassuntiva di tutti i connettivi binari principali.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{cc|cccc}
+  \toprule
+  $P$ & $Q$ & $P \land Q$ & $P \lor Q$ & $P \to Q$ & $P \liff Q$ \\
+  \midrule
+  V & V & V & V & V & V \\
+  V & F & F & V & F & F \\
+  F & V & F & V & V & F \\
+  F & F & F & F & V & V \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
 
 % ============================================================
 \newpage
